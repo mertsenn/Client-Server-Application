@@ -59,17 +59,22 @@ while True:
     sendArrOprerations= pickle.dumps(arrOperations)
     
 
-    while True:
-        if name == "1" and surname == "1":
-            conn.send(bytes(f"Welcome to the server {name}. Which operation do you want to use here is your options:  ", "utf-8"))
-            print(f"{addr} has connected to the server")
-            while True:
-                print("I am in while loop")
-                conn.sendall(sendArrOprerations)
-                operationSelection = conn.recv(1024)
-                decodedOperationSelection = operationSelection.decode("utf-8")
-                selection(decodedOperationSelection, conn)
-        else:
-            conn.send(bytes("Wrong name", "utf-8"))
-            break
-    break
+    
+    if name == "1" and surname == "1":
+        conn.send(bytes(f"Welcome to the server {name}. Which operation do you want to use here is your options:  ", "utf-8"))
+        print(f"{addr} has connected to the server")
+        while True:
+            print("I am in while loop")
+            conn.sendall(sendArrOprerations)
+            operationSelection = conn.recv(1024)
+            decodedOperationSelection = operationSelection.decode("utf-8")
+            selection(decodedOperationSelection, conn)
+            if decodedOperationSelection == "quit":
+                print("See you later alligator")
+                break
+        break    
+    else:
+        conn.send(bytes("Wrong name", "utf-8"))
+        break
+        
+    

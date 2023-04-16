@@ -7,7 +7,6 @@ HEADERLEN=20
 
 
 
-
 s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 s.connect((HOST,PORT))
 
@@ -21,6 +20,7 @@ while True:
 
     Name=input("Enter your name: ")
     Surname=input("Enter your surname: ")
+
     #send name and surname
     s.send(bytes(Name,"utf-8"))
     s.send(bytes(Surname,"utf-8"))
@@ -32,20 +32,17 @@ while True:
     
     #printing options part
     optionArray=s.recv(1024)
-    
     myOptionArray=pickle.loads(optionArray)
     for i in myOptionArray:
         print(i)
 
     #operation selection part
-   
-
-
-
     operationSelection=input("Enter your operation: ")
     s.send(bytes(operationSelection,"utf-8"))
 
     operationInfo=s.recv(1024)
     print(operationInfo.decode("utf-8"))
 
-    s.close()
+    if operationSelection == "quit":
+        print("See you later alligator")
+        break 

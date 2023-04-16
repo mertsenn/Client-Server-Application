@@ -29,16 +29,21 @@ while True:
     greetings=s.recv(1024)
     print(greetings.decode("utf-8"))
     
-    
-    #printing options part
-    optionArray=s.recv(1024)
-    myOptionArray=pickle.loads(optionArray)
-    for i in myOptionArray:
-        print(i)
+    while True:
+        #printing options part
+        optionArray=s.recv(1024)
+        myOptionArray=pickle.loads(optionArray)
+        for i in myOptionArray:
+            print(i)
 
-    #operation selection part
-    operationSelection=input("Enter your operation: ")
-    s.send(bytes(operationSelection,"utf-8"))
+        #operation selection part
+        operationSelection=input("Enter your operation: ")
+        s.send(bytes(operationSelection,"utf-8"))
 
-    operationInfo=s.recv(1024)
-    print(operationInfo.decode("utf-8"))
+        operationInfo=s.recv(1024)
+        print(operationInfo.decode("utf-8"))
+
+        if operationSelection == "quit":
+            print("See you later alligator")
+            break
+    break
