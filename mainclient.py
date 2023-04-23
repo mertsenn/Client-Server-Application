@@ -15,7 +15,7 @@ while True:
     msgdataName=s.recv(1024)
     msgdataSurname=s.recv(1024)
 
-    print(msgdataName.decode("utf-8"))
+    print(msgdataName.decode("utf-8"))#printing name's and surname's input part
     print(msgdataSurname.decode("utf-8"))
 
     Name=input("Enter your name: ")

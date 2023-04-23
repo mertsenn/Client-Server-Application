@@ -1,7 +1,7 @@
-import socket
-from datetime import datetime as datetime
+import socket #need for creating socket object
+from datetime import datetime as datetime # needed for geting time and date 
 import datetime as dt
-import pickle
+import pickle#needed for sending array to client
 
 HOST = "127.0.0.1"
 PORT = 555
@@ -9,10 +9,11 @@ PORT = 555
 HEADERSIZE = 20
 
 
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.bind((HOST, PORT))
-s.listen()
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)#creating socket object
+s.bind((HOST, PORT))#binding host and port to socket object
+s.listen()#listening for connections
 
+#these are my functions
 def printCapOfTurkey(conn):
     answer = "Capital city of Turkey is Gaziosmanpasa"
     return conn.send(bytes(answer, "utf-8"))
@@ -26,7 +27,7 @@ def currentTime(conn):
     now = datetime.now()
     current_time = now.strftime("%H:%M:%S")
     return conn.send(current_time.encode("utf-8"))
-
+#and fucntion is my main function which is used for selecting operation
 def selection(decodedOperationSelection,conn):
     if decodedOperationSelection == "date":
         currentDate(conn)
@@ -35,6 +36,7 @@ def selection(decodedOperationSelection,conn):
     elif decodedOperationSelection == "capTurkey":
         printCapOfTurkey(conn)
     elif decodedOperationSelection == "quit":
+        conn.send(bytes("See you alter aligator", "utf-8"))
         return conn.close()
     else:
         print("Please enter a valid string")
@@ -43,38 +45,38 @@ def selection(decodedOperationSelection,conn):
 
 
 while True:
-    conn, addr = s.accept()
+    conn, addr = s.accept()#creating connection object and address object
 
-    conn.send(bytes("Please enter your name", "utf-8"))
+    conn.send(bytes("Please enter your name", "utf-8"))#to get input from client's name and password
     conn.send(bytes("Please enter your password", "utf-8"))
 
-    dataName = conn.recv(1024)
+    dataName = conn.recv(1024)#this is for getting name and password from client
     dataSurname = conn.recv(1024)
 
-    name = dataName.decode("utf-8")
+    name = dataName.decode("utf-8")#decoding name and password
     surname = dataSurname.decode("utf-8")
 
     
-    arrOperations = ["date", "time", "capTurkey", "quit"]
-    sendArrOprerations= pickle.dumps(arrOperations)
+    arrOperations = ["date", "time", "capTurkey", "quit"]#these are my operations for client
+    sendArrOprerations= pickle.dumps(arrOperations)#sending array to client
     
 
     
-    if name == "1" and surname == "1":
-        conn.send(bytes(f"Welcome to the server {name}. Which operation do you want to use here is your options:  ", "utf-8"))
-        print(f"{addr} has connected to the server")
-        while True:
+    if name == "cmpe322" and surname == "bilgiuni":#required name and password
+        conn.send(bytes(f"Welcome to the server {name}. Which operation do you want to use here is your options:  ", "utf-8"))#send welcome message to client and type client's name
+        print(f"{addr} has connected to the server")#type client's address
+        while True:#this is for client's operations
             print("I am in while loop")
             conn.sendall(sendArrOprerations)
             operationSelection = conn.recv(1024)
             decodedOperationSelection = operationSelection.decode("utf-8")
             selection(decodedOperationSelection, conn)
             if decodedOperationSelection == "quit":
-                print("See you later alligator")
+                print("client send a quit message")
                 break
         break    
     else:
-        conn.send(bytes("Wrong name", "utf-8"))
+        conn.send(bytes("Wrong name", "utf-8"))#if client's name and password is wrong send wrong message to client
         break
         
     
