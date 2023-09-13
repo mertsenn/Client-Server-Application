@@ -1,13 +1,14 @@
+#written with pyhton
 import socket
 import pickle
 
 HOST="127.0.0.1"
 PORT=555
-HEADERLEN=20
 
 
 
-s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+
+s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)#creating socket object and connecting to server. AF_INET is for IPv4 and SOCK_STREAM is for TCP
 s.connect((HOST,PORT))
 
 while True:
@@ -19,7 +20,7 @@ while True:
     print(msgdataSurname.decode("utf-8"))
 
     Name=input("Enter your name: ")
-    Surname=input("Enter your surname: ")
+    Surname=input("Enter your password: ")
 
     #send name and surname
     s.send(bytes(Name,"utf-8"))
@@ -44,6 +45,6 @@ while True:
         print(operationInfo.decode("utf-8"))
 
         if operationSelection == "quit":
-            print("See you later alligator")
+            
             break
     break
